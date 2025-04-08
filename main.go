@@ -8,29 +8,24 @@ import (
 )
 
 type User struct {
-	User string
+	Userd string `json:"user"`
 }
 
 func GET(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	user := r.FormValue("user")
-	va := &User{}
-	err := json.Unmarshal([]byte(user), va)
+	Vuser := &User{Userd: user}
+	value, err := json.Marshal(Vuser)
 	if err != nil {
-		fmt.Println(err)
-		return
+		fmt.Println("err go:", err)
 	}
-	value, err := json.Marshal(va)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(value)
 }
 
 func main() {
 	router := httprouter.New()
 	router.GET("/", GET)
+	router.ServeFiles("/src/app/*filepath", http.Dir("./src/app"))
 	if err := http.ListenAndServe("localhost:8080", router); err != nil {
 		fmt.Println(err)
 		return
