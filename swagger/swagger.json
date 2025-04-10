@@ -1,0 +1,126 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Conduit API",
+    "version": "1.0.0",
+    "title": "Conduit Api"
+  },
+  "license": {
+    "name": "MIT License",
+    "url": "https://opensource.org/licenses/MIT"
+  },
+  "basePath": "/api/",
+  "schemes": [
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "Token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "JWT token for authorization (optional)"
+    }
+  },
+  "paths": {
+    "/main": {
+      "get": {
+        "summary": "Main page",
+        "description": "Предоставляет данные о товарах",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Products"
+            }
+          }
+        }
+      }
+    },
+    "/main/product": {
+      "get": {
+        "summary": "Get Product",
+        "description": "Получает товар на который он перешел",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "number",
+            "in": "query",
+            "description": "The ID of the product",
+            "type": "string",
+            "example": "4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProductList"
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Products": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Product"
+      }
+    },
+    "ProductList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Product"
+      }
+    },
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "4"
+        },
+        "name": {
+          "type": "string",
+          "example": "Product Name"
+        },
+        "description": {
+          "type": "string",
+          "example": "Description of the product"
+        },
+        "price": {
+          "type": "number",
+          "example": 19.99
+        }
+      }
+    },
+    "ProductList": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "4"
+        },
+        "name": {
+          "type":"string",
+          "example": "anton"
+        },
+        "price": {
+          "type": "integer",
+          "example": 500
+        }
+      }
+    }
+  }
+}
